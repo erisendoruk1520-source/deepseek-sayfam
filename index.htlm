@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek - Şifre Korumalı Sayfa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .password-box {
+            margin: 20px 0;
+        }
+        
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .error {
+            color: #ff4444;
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .info {
+            color: #666;
+            margin-top: 20px;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .download-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        
+        .download-link {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        
+        .download-link:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 DeepSeek Gizli Sayfa</h1>
+        
+        <div class="password-box">
+            <input type="password" id="password" placeholder="Şifreyi giriniz..." onkeypress="handleKeyPress(event)">
+        </div>
+        
+        <button onclick="checkPassword()">Giriş Yap</button>
+        
+        <div class="error" id="errorMessage">
+            ❌ Yanlış şifre! Tekrar deneyin.
+        </div>
+        
+        <div class="info">
+            <p>📌 İpucu: 4 haneli bir yıl</p>
+        </div>
+        
+        <div class="download-section">
+            <p>Bu sayfayı indirip kendi bilgisayarında kullanabilirsin:</p>
+            <a href="#" class="download-link" id="downloadBtn" onclick="downloadHTML(event)">📥 HTML Dosyasını İndir</a>
+            <p style="font-size: 12px; margin-top: 10px; color: #888;">İndirdikten sonra tarayıcıda açarak kullanabilirsin</p>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (password === '2015') {
+                // Doğru şifre - DeepSeek resmi sayfasına yönlendir
+                window.location.href = 'https://www.deepseek.com/';
+            } else {
+                // Yanlış şifre - hata mesajı göster
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = '';
+                
+                // 3 saniye sonra hata mesajını gizle
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        }
+        
+        function downloadHTML(event) {
+            event.preventDefault();
+            
+            // Sayfanın HTML içeriğini al
+            const htmlContent = document.documentElement.outerHTML;
+            
+            // Blob oluştur
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            
+            // İndirme linki oluştur
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'deepseek-gizli-sayfa.html';
+            
+            // İndirmeyi başlat
+            document.body.appendChild(a);
+            a.click();
+            
+            // Temizlik
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
